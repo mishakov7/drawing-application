@@ -46,8 +46,14 @@ clear.onclick = function() {
 
 const download = document.querySelector("#downloadimg");
 download.onclick  = function() {
-    url = canvas.toDataURL("image/png");
-    window.open(url);
+    url = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+    // NOTE: The method used before only worked in Firefox. 
+    // This method is compatible with Chrome.
+    var link = document.createElement('a');
+    link.download = "drawing.png";
+    link.href = url;
+    link.click();
 }
 
 // This function will allow for a color to be selected.
