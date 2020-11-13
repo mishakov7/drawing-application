@@ -12,11 +12,69 @@
         #mycanvas {
             background-color: #fff;
         }
+
+        #canvas-container {
+            display: flex;
+            width: auto;
+            height: max-content;
+        }
+
+        .prop-container {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 50px;
+            margin: 0 5px;
+        }
+
+        .prop {
+            border: dashed 1px #ccc;
+            width: 30px;
+            height: 30px;
+            margin: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="canvas-container">
+
+        <!-- TOOLS Brush, Eraser, Fill -->
+        <div class="prop-container">
+
+            <!-- Brush Tool -->
+            <span class="prop" id="brushtool">B</span>
+
+            <!-- Eraser Tool -->
+            <span class="prop" id="erasetool">E</span>
+
+            <!-- Fill Tool -->
+            <span class="prop" id="filltool">F</span>
+
+        </div>
+
+        <!-- COLORS -->
+        <div class="prop-container">
+            <span class="prop color" style="background-color: red;"></span>
+            <span class="prop color" style="background-color: yellow;"></span>
+            <span class="prop color" style="background-color: blue;"></span>
+            <span class="prop color" style="background-color: green;"></span>
+            <span class="prop color" style="background-color: pink;"></span>
+            <span class="prop color" style="background-color: black;"></span>
+            <input class="prop color" type="color" />
+        </div>
+
         <canvas id="mycanvas" width="800" height="500"></canvas>
+
+        <!-- CLEAR / DOWNLOAD -->
+        <div class="prop-container">
+
+            <!-- Download -->
+            <span class="prop" id="downloadimg">D</span>
+            
+            <!-- Clear -->
+            <span class="prop" id="clearimg">C</span>
+        </div>
     </div>
 
     <script src="canvas.js"></script>
