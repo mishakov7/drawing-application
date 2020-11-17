@@ -15,6 +15,11 @@ let eraseTool = false;
 let fillTool = false;
 let colorClicked = false;
 
+// These are the stacks that represent the state of the
+// canvas at different points in time.
+let savedCanvas = [];
+let removedCanvas = [];
+
 /**
  * CANVAS EVENT LISTENER
  * These event listeners define the main mechanics of the 
@@ -39,6 +44,12 @@ erase.addEventListener('click', selectTool);
 const fill = document.querySelector("#filltool");
 fill.addEventListener('click', selectTool);
 
+const undo = document.querySelector("#undo");
+undo.addEventListener('click', undoAction);
+
+const redo = document.querySelector("#redo");
+redo.addEventListener('click', redoAction);
+
 const clear = document.querySelector("#clearimg");
 clear.onclick = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -54,6 +65,45 @@ download.onclick  = function() {
     link.download = "drawing.png";
     link.href = url;
     link.click();
+}
+
+
+function undoAction() {
+    // When an action is undone, it gets saved (pushed)
+    // to the removedCanvas stack.
+    removedCanvas.push(canvas.toDataURL("image/png"));
+    clear.click();
+
+    let undoImage = new Image();
+
+    undoImage.onload = function() {
+        ctx.drawImage(undoImage, 0, 0);
+    }
+
+    // When an action is undone, the state of the canvas is
+    // the most recent addition of the savedCanvas stack.
+    // This then means that the most recent addition to the
+    // savedCanvas stack is removed (popped).
+    undoImage.src = savedCanvas.pop();
+}
+
+function redoAction() {
+    // When an action is redone, it gets saved (pushed)
+    // to the savedCanvas stack.
+    savedCanvas.push(canvas.toDataURL("image/png"));
+    clear.click();
+
+    let redoImage = new Image();
+
+    redoImage.onload = function() {
+        ctx.drawImage(redoImage, 0, 0);
+    }
+
+    // When an action is redone, the state of the canvas is
+    // the most recent addition of the removedCanvas stack.
+    // This then means that the most recent addition to the
+    // removedCanvas stack is removed (popped).
+    redoImage.src = removedCanvas.pop();
 }
 
 // This function will allow for a color to be selected.
@@ -148,6 +198,7 @@ function selectProps() {
 // Occurs when the mouse is pressed (and held)
 function startStroke(e) {
     painting = true;
+    savedCanvas.push(canvas.toDataURL("image/png"));
 
     // Allows you to create dots on the canvas.
     drawStroke(e);
