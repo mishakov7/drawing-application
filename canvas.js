@@ -1,3 +1,13 @@
+//
+// pixelIndex = (y * canvas.width + x) * 4;
+//
+// traveling up
+// pixelIndex -= canvas.width * 4;
+//
+// traveling down
+// pixelIndex += canvas.width * 4;
+//
+
 // The necessary constants to make canvas work!
 const canvas = document.querySelector("#mycanvas");
 const ctx = canvas.getContext("2d");
@@ -25,9 +35,28 @@ let removedCanvas = [];
  * These event listeners define the main mechanics of the 
  * drawing tool. 
  */
-canvas.addEventListener('mousemove', drawStroke);
-canvas.addEventListener('mouseup', finishStroke);
-canvas.addEventListener('mousedown', startStroke);
+addCanvasStroke();
+chooseColor();
+
+function addCanvasStroke() {
+    canvas.addEventListener('mousemove', drawStroke);
+    canvas.addEventListener('mouseup', finishStroke);
+    canvas.addEventListener('mousedown', startStroke);
+}
+
+function removeCanvasStroke() {
+    canvas.removeEventListener('mousemove', drawStroke);
+    canvas.removeEventListener('mouseup', finishStroke);
+    canvas.removeEventListener('mousedown', startStroke);
+}
+
+function addFillClick() {
+    canvas.addEventListener('click', fillArea);
+}
+
+function removeFillClick() {
+    canvas.removeEventListener('click', fillArea);
+}
 
 /**
  * TOOL EVENT LISTENER
@@ -65,6 +94,33 @@ download.onclick  = function() {
     link.download = "drawing.png";
     link.href = url;
     link.click();
+}
+
+function enableBrush() {
+    brushTool = true;
+    eraseTool = false;
+    fillTool = false;
+
+    removeFillClick();
+    addCanvasStroke();
+}
+
+function enableErase() {
+    brushTool = false;
+    eraseTool = true;
+    fillTool = false;
+
+    removeFillClick();
+    addCanvasStroke();
+}
+
+function enableFill() {
+    brushTool = false;
+    eraseTool = false;
+    fillTool = true;
+
+    removeCanvasStroke();
+    addFillClick();
 }
 
 
@@ -119,11 +175,6 @@ function chooseColor() {
             // The color flag changes.
             colorClicked = true;
 
-            // When a color is clicked, the tool is reset back to brush.
-            brushTool = true;
-            eraseTool = false;
-            fillTool = false;
-
             // This branching identifies whether the color picked was
             // a preset color, or a color derived from the color picker.
             if (this.value == undefined)
@@ -140,7 +191,7 @@ function chooseColor() {
     if (colorClicked)
         return colorChoice;
     else
-        return 'black';
+        return 'rgb(0, 0, 0)';
 }
 
 // This function allows us to switch between the different tools
@@ -150,19 +201,15 @@ function selectTool() {
 
     switch (tool) {
         case "brushtool":
-            brushTool = true;
-            eraseTool = false;
-            fillTool = false;
+            enableBrush();
             break;
 
         case "erasetool":
-            brushTool = false;
-            eraseTool = true;
-            fillTool = false;
+            enableErase();
             break;
 
         case "filltool":
-            console.log("you clicked the fill tool.");
+            enableFill();
             break;
 
         default:
@@ -205,11 +252,12 @@ function startStroke(e) {
 }
 
 // Occurs when the mouse is released (from being held)
-function finishStroke() {
+function finishStroke(e) {
     painting = false;
 
     // Prevents two consecutive strokes from being connected.
     ctx.beginPath();
+
 }
 
 // Occurs as the mouse is moved while being pressed.
@@ -231,4 +279,122 @@ function drawStroke(e) {
     // As the mouse moves, a path is created and will move concurrently until the mouse is released.
     ctx.beginPath();
     ctx.moveTo(mouseX, mouseY);
+}
+
+// fill color
+
+function fillArea(e) {
+    // Mouse coordinates
+    let mouseX = e.clientX - this.offsetLeft;
+    let mouseY = e.clientY - this.offsetTop;
+    let pixelStack = [[mouseX, mouseY]];
+
+    // Pixel data
+    canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Mouse coordinate pixel data
+    mouseColor = findMouseColor(mouseX, mouseY);
+
+    // Fill color pixel data
+    fillColor = findFillColor();
+
+    while (pixelStack.length > 0) {
+        currentPixel = pixelStack.pop();
+        x = currentPixel[0];
+        y = currentPixel[1];
+
+        // Index of the pixel in the big pixel array
+        pixelIndex = (y * canvas.width + x) * 4;
+        
+        // Travel up
+        // y-- >= 0 : below the edge of the canvas
+        // matchMouseColor - checks to see if the color we are landing on is the same color
+
+        // y-- : going up
+        // y++ : going down
+        // x-- : going left
+        // x++ : going right
+        while ((y-- >= 0) && (matchMouseColor(pixelIndex) == true)) {
+            pixelIndex -= canvas.width * 4;
+        }
+
+        pixelIndex += canvas.width * 4;
+        y++;
+
+        let lookLeft = false;
+        let lookRight = false;
+
+        while ((y++ < canvas.height) && (matchMouseColor(pixelIndex))) {
+            colorPixel(pixelIndex, fillColor);
+
+            // Look left
+            if (x > 0) {
+
+                if ((lookLeft == false) && (matchMouseColor(pixelIndex - 4))) {
+                    let leftCoords = [x - 1, y];
+                    pixelStack.push(leftCoords);
+                    lookLeft = true;
+                }
+
+                else if (lookLeft == true) {
+                    lookLeft = false;
+                }
+            }
+
+            // Look right
+            if (x < canvas.width - 1) {
+                if ((lookRight == false) && (matchMouseColor(pixelIndex + 4))) {
+                    let rightCoords = [x + 1, y];
+                    pixelStack.push(rightCoords);
+                    lookRight = true;
+                }
+
+                else if (lookRight == true) {
+                    lookRight = false;
+                }
+            }
+
+            pixelIndex += canvas.width * 4;
+        }
+
+    }
+
+    ctx.putImageData(canvasPixels, 0, 0);
+
+}
+
+function findMouseColor(x, y) {
+    index = (y * canvas.width + x) * 4;
+    r = canvasPixels.data[index];
+    g = canvasPixels.data[index + 1];
+    b = canvasPixels.data[index + 2];
+    a = canvasPixels.data[index + 3];
+
+    return [r, g, b, a];
+}
+
+function findFillColor() {
+    rgbStr = chooseColor();
+    rgbArr = rgbStr.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+    return [rgbArr[1], rgbArr[2], rgbArr[3]];
+}
+
+function matchMouseColor(index) {
+    r = canvasPixels.data[index];
+    g = canvasPixels.data[index + 1];
+    b = canvasPixels.data[index + 2];
+
+    return (
+        r == mouseColor[0] &&
+        g == mouseColor[1] &&
+        b == mouseColor[2] &&
+        a == mouseColor[3]
+    );
+}
+
+function colorPixel(index, color) {
+    canvasPixels.data[index] = color[0];
+    canvasPixels.data[index + 1] = color[1];
+    canvasPixels.data[index + 2] = color[2];
+    canvasPixels.data[index + 3] = color[3];
 }
