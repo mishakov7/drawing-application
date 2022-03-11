@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebS App</title>
+
+    <style>
+        body {
+            background-color: #eee;
+        }
+
+        #mycanvas {
+            background-color: rgb(255, 255, 255);
+        }
+
+        #canvas-container {
+            display: flex;
+            width: auto;
+            height: max-content;
+        }
+
+        .prop-container {
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+            width: 50px;
+            margin: 0 5px;
+        }
+
+        .prop {
+            border: dashed 1px #ccc;
+            width: 30px;
+            height: 30px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+
+        <!-- TOOLS Brush, Eraser, Fill -->
+        <div class="prop-container">
+
+            <!-- Undo Functionality -->
+            <span class="prop" id="undo">U</span>
+
+            <!-- Brush Tool -->
+            <span class="prop" id="brushtool">B</span>
+
+            <!-- Eraser Tool -->
+            <span class="prop" id="erasetool">E</span>
+
+            <!-- Fill Tool -->
+            <span class="prop" id="filltool">F</span>
+
+        </div>
+
+        <!-- COLORS -->
+        <div class="prop-container">
+
+            <!-- Redo Functionality -->
+            <span class="prop" id="redo">R</span>
+
+            <span class="prop color" style="background-color: rgb(255, 0, 0);"></span>
+            <span class="prop color" style="background-color: rgb(255, 255, 0);"></span>
+            <span class="prop color" style="background-color: rgb(0, 0, 255);"></span>
+            <span class="prop color" style="background-color: rgb(0, 128, 0);"></span>
+            <span class="prop color" style="background-color: rgb(255, 192, 203);"></span>
+            <span class="prop color" style="background-color: rgb(0, 0, 0);"></span>
+            <input class="prop color" type="color" />
+        </div>
+
+        <canvas id="mycanvas" width="800" height="500"></canvas>
+
+        <!-- CLEAR / DOWNLOAD -->
+        <div class="prop-container">
+
+            <!-- Download -->
+            <span class="prop" id="downloadimg" download="drawing.png">D</span>
+            
+            <!-- Clear -->
+            <span class="prop" id="clearimg">C</span>
+        </div>
+    </div>
+
+    <script src="canvas.js"></script>
+    <script src="queue-fill.js"></script>
+</body>
+</html>
