@@ -30,13 +30,10 @@ let colorClicked = false;
 let savedCanvas = [];
 let removedCanvas = [];
 
-<<<<<<< HEAD
 ctx.fillStyle = "#3F3C4F";
 ctx.fillRect(0, 0, 800, 500);
 
 
-=======
->>>>>>> 3b8dbfdf17feb8dd3d0fe63cbe2c440e2b97f9c5
 /**
  * CANVAS EVENT LISTENER
  * These event listeners define the main mechanics of the 
