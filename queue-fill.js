@@ -64,8 +64,27 @@ function findMouseColor(x, y) {
 // This function determines the color we are filling with.
 function findFillColor() {
     rgbStr = chooseColor();
+
+    if (rgbStr[0] == "#") 
+        rgbStr = hexToRgb(rgbStr);
+
+    console.log(rgbStr);
+
     rgbArr = rgbStr.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
+    
     return [rgbArr[1], rgbArr[2], rgbArr[3]];
+
+}
+
+function hexToRgb(c){
+    if(/^#([a-f0-9]{3}){1,2}$/.test(c)){
+        if(c.length== 4){
+            c= '#'+[c[1], c[1], c[2], c[2], c[3], c[3]].join('');
+        }
+        c= '0x'+c.substring(1);
+        return 'rgb('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+')';
+    }
+    return '';
 }
 
 // This function identifies whether or not the current pixel matches the original pixel.

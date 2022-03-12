@@ -33,4 +33,10 @@ body {
     margin: 10px;
     cursor: pointer;
     background-color: #4C4863;
+    transition: border 0.2s;
+}
+
+.prop-selected {
+    border: solid 4px #FFF;
+    transition: border 0.2s;
 }
