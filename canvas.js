@@ -182,8 +182,11 @@ function chooseColor() {
 
             // This branching identifies whether the color picked was
             // a preset color, or a color derived from the color picker.
+            // if (this.value == undefined)
+            //     colorChoice = this.style.backgroundColor;
+
             if (this.value == undefined)
-                colorChoice = this.style.backgroundColor;
+                colorChoice = 'rgb(255, 255, 255)';
 
             else
                 this.addEventListener('change', function() {

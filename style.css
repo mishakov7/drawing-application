@@ -44,3 +44,17 @@ body {
     border: solid 4px #FFF;
     transition: border 0.2s;
 }
+
+/* #colorpicker {
+    background: linear-gradient(105.07deg, #FF8787 22.46%, #F6CD62 30.7%, #B1E182 37.42%, #99E3D1 52.06%, #69B5EC 65.79%, #CA9AE8 81.05%);
+} */
+
+input[type=color] {
+    border: none;
+    cursor: pointer;
+    width: 1px;
+    border-radius: 50px;
+    background: linear-gradient(105.07deg, #FF8787 22.46%, #F6CD62 30.7%, #B1E182 37.42%, #99E3D1 52.06%, #69B5EC 65.79%, #CA9AE8 81.05%);
+    height: 1px;
+    padding: 25px;
+}
