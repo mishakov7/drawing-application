@@ -36,6 +36,10 @@ body {
     transition: border 0.2s;
 }
 
+.prop:hover {
+    border: solid 4px #FFF;
+}
+
 .prop-selected {
     border: solid 4px #FFF;
     transition: border 0.2s;

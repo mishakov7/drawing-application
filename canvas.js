@@ -30,8 +30,8 @@ let colorClicked = false;
 let savedCanvas = [];
 let removedCanvas = [];
 
-ctx.fillStyle = "#3F3C4F";
-ctx.fillRect(0, 0, 800, 500);
+// ctx.fillStyle = "#3F3C4F";
+// ctx.fillRect(0, 0, 800, 500);
 
 
 /**
@@ -199,7 +199,7 @@ function chooseColor() {
         brush.style.borderColor = colorChoice;
         fill.style.borderColor = colorChoice;
         return colorChoice;
-        
+
     } else {
         return 'rgb(255, 255, 255)';
     }
