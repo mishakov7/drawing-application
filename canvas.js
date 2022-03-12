@@ -184,6 +184,7 @@ function chooseColor() {
             // a preset color, or a color derived from the color picker.
             if (this.value == undefined)
                 colorChoice = this.style.backgroundColor;
+
             else
                 this.addEventListener('change', function() {
                     colorChoice = this.value; 
@@ -191,12 +192,17 @@ function chooseColor() {
         });
     }
 
+
     // This branching determines whether to choose the default color, or 
     // a color picked from the event handler. 
-    if (colorClicked)
+    if (colorClicked) {
+        brush.style.borderColor = colorChoice;
+        fill.style.borderColor = colorChoice;
         return colorChoice;
-    else
+        
+    } else {
         return 'rgb(255, 255, 255)';
+    }
 }
 
 // This function allows us to switch between the different tools
@@ -243,13 +249,11 @@ function selectProps() {
 
         // The color is chosen depending on it being chosen or default.
         ctx.strokeStyle = chooseColor();
-        // brush.style.borderColor = chooseColor();
     }
 
     if (fillTool) {
         // The color is chosen depending on it being chosen or default.
         ctx.strokeStyle = chooseColor();
-        // fill.style.borderColor = chooseColor();
     }
 
     if (eraseTool) {
