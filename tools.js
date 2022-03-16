@@ -17,6 +17,7 @@ class Tool {
 }
 
 class Brush extends Tool {
+
     constructor(element, selected, cursor, painting, operation, size, color) {
         super(element, selected, cursor);
 
@@ -24,9 +25,6 @@ class Brush extends Tool {
         this.operation = operation;
         this.size = size;
         this.color = color;
-        
-        const canvas = document.querySelector("#mycanvas");
-        const ctx = canvas.getContext("2d");
     }
 
     // We call this function specifically to set default properties.
@@ -35,27 +33,27 @@ class Brush extends Tool {
         ctx.lineWidth = this.size;
         ctx.lineCap = 'round';
         ctx.strokeStyle = this.color;
+
+        console.log("props set");
+
     }
 
     // Occurs when the mouse is pressed (and held)
-    startStroke() {
-        console.log("startStroke");
+    startStroke(e) {
+        this.setProps();
         this.painting = true;
         // savedCanvas.push(canvas.toDataURL("image/png"));
 
         // Allows you to create dots on the canvas.
-        this.drawStroke();
+        canvas.addEventListener('mousemove', this.drawStroke.bind(this));
     }
 
     // Occurs as the mouse is moved while being pressed.
     drawStroke(e) {
-        console.log("drawStroke");
 
         if (!this.painting) {
             return;
         }
-
-        this.setProps();
 
         // Identifies the precise position of the mouse.
         let mouseX = e.clientX - this.offsetLeft;
@@ -71,12 +69,25 @@ class Brush extends Tool {
     }
 
     // Occurs when the mouse is released (from being held)
-    finishStroke() {
+    finishStroke(e) {
         this.painting = false;
+
+        canvas.removeEventListener('mousemove', this.drawStroke);
 
         // Prevents two consecutive strokes from being connected.
         ctx.beginPath();
 
     }
+
+    addCanvasStroke() {
+        canvas.addEventListener('mouseup', this.finishStroke.bind(this));
+        canvas.addEventListener('mousedown', this.startStroke.bind(this));
+    }
+
+    removeCanvasStroke() {
+        canvas.removeEventListener('mouseup', this.finishStroke);
+        canvas.removeEventListener('mousedown', this.startStroke);
+    }
+    
 
 }

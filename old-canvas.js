@@ -44,13 +44,13 @@ addCanvasStroke();
 chooseColor();
 
 function addCanvasStroke() {
-    canvas.addEventListener('mousemove', drawStroke);
+    // canvas.addEventListener('mousemove', drawStroke);
     canvas.addEventListener('mouseup', finishStroke);
     canvas.addEventListener('mousedown', startStroke);
 }
 
 function removeCanvasStroke() {
-    canvas.removeEventListener('mousemove', drawStroke);
+    // canvas.removeEventListener('mousemove', drawStroke);
     canvas.removeEventListener('mouseup', finishStroke);
     canvas.removeEventListener('mousedown', startStroke);
 }
@@ -269,8 +269,11 @@ function startStroke(e) {
     painting = true;
     savedCanvas.push(canvas.toDataURL("image/png"));
 
+    selectProps();
+
     // Allows you to create dots on the canvas.
-    drawStroke(e);
+    // drawStroke(e);
+    canvas.addEventListener('mousemove', drawStroke);
 }
 
 // Occurs when the mouse is released (from being held)
@@ -287,8 +290,6 @@ function drawStroke(e) {
     if (!painting) {
         return;
     }
-
-    selectProps();
 
     // Identifies the precise position of the mouse.
     let mouseX = e.clientX - this.offsetLeft;
