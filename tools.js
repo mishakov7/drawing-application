@@ -12,17 +12,18 @@ class Tool {
 		disableAll(); 
 		
         this.selected = true;
-		//console.log(this.elmt);
-		//this.elmt.classList.add("tool-selected");
+		this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
-		this.setProps();
-		
-		console.log(this.color);
+        this.setProps();
     }
 
     disable() {
 		this.selected = false;
         this.elmt.classList.remove("tool-selected");
+    }
+
+    setProps() {
+        
     }
 }
 
@@ -48,7 +49,6 @@ class Brush extends Tool {
 
     // Occurs when the mouse is pressed (and held)
     startStroke(e) {
-        this.setProps();
         this.painting = true;
 
         // Allows you to create dots on the canvas.
@@ -61,6 +61,8 @@ class Brush extends Tool {
         if (!this.painting) {
             return;
         }
+
+        console.log(this.operation);
 
         // Identifies the precise position of the mouse.
         let mouseX = e.clientX - canvas.offsetLeft;

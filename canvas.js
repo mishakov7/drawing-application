@@ -14,15 +14,21 @@ const EraserBrush = new Brush(
     "url('eraser.svg'), auto",
     false,
     "destination-out",
-    10,
-	"rgba(255, 255, 255, 0)"
+    16
 );
 
 
 PaintBrush.enable();
 PaintBrush.addCanvasStroke();
 
-EraserBrush.elmt.addEventListener('click', EraserBrush.enable.bind(this));
+
+EraserBrush.elmt.addEventListener('click', function () {
+    EraserBrush.enable();
+}, false);
+
+PaintBrush.elmt.addEventListener('click', function () {
+    PaintBrush.enable();
+}, false);
 
 function disableAll() {
 	PaintBrush.disable();
