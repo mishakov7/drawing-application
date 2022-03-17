@@ -15,10 +15,16 @@ const EraserBrush = new Brush(
     false,
     "destination-out",
     10,
-    "rgb(255, 255, 255)"
+	"rgba(255, 255, 255, 0)"
 );
 
 
 PaintBrush.enable();
-PaintBrush.setProps();
 PaintBrush.addCanvasStroke();
+
+EraserBrush.elmt.addEventListener('click', EraserBrush.enable.bind(this));
+
+function disableAll() {
+	PaintBrush.disable();
+	EraserBrush.disable();
+}

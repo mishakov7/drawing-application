@@ -2,28 +2,34 @@ const canvas = document.querySelector("#mycanvas");
 const ctx = canvas.getContext("2d");
 
 class Tool {
-    constructor(element, selected, cursor) {
-        this.element = element;
+    constructor(elmt, selected, cursor) {
+        this.elmt = elmt;
         this.selected = selected;
         this.cursor = cursor;
     }
 
     enable() {
+		disableAll(); 
+		
         this.selected = true;
-		this.element.classList.add("tool-selected");
+		//console.log(this.elmt);
+		//this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
+		this.setProps();
+		
+		console.log(this.color);
     }
 
     disable() {
 		this.selected = false;
-        this.element.classList.remove("tool-selected");
+        this.elmt.classList.remove("tool-selected");
     }
 }
 
 class Brush extends Tool {
 
-    constructor(element, selected, cursor, painting, operation, size, color) {
-        super(element, selected, cursor);
+    constructor(elmt, selected, cursor, painting, operation, size, color) {
+        super(elmt, selected, cursor);
 
         this.painting = painting;
         this.operation = operation;
@@ -44,9 +50,6 @@ class Brush extends Tool {
     startStroke(e) {
         this.setProps();
         this.painting = true;
-		
-		//ctx.fillStyle = "#ff0000";
-		//ctx.fillRect(432, 54, 200, 200);
 
         // Allows you to create dots on the canvas.
         canvas.addEventListener('mousemove', this.drawStroke.bind(this));
@@ -96,6 +99,7 @@ class Brush extends Tool {
         canvas.removeEventListener('mouseup', this.finishStroke);
         canvas.removeEventListener('mousedown', this.startStroke);
     }
+	
     
 
 }
