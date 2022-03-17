@@ -40,9 +40,14 @@ PaintBrush.elmt.addEventListener('click', function () {
     PaintBrush.enable();
 }, false);
 
+FillTool.elmt.addEventListener('click', function () {
+    FillTool.enable();
+}, false);
+
 function disableAll() {
 	PaintBrush.disable();
 	EraserBrush.disable();
+    FillTool.disable();
 }
 
 function chooseColor() {
