@@ -111,3 +111,9 @@ class Brush extends Tool {
     
 
 }
+
+class Fill extends Tool {
+    constructor(elmt, selected, cursor, color) {
+        super(elmt, selected, cursor, color);
+    }
+}
