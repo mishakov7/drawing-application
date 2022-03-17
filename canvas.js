@@ -1,10 +1,7 @@
-const canvas = document.querySelector("#mycanvas");
-const ctx = canvas.getContext("2d");
-
 const PaintBrush = new Brush(
     document.querySelector("#brushtool"),
-    true,
-    "pointer",
+    false,
+    "url('paintbrush.svg'), auto",
     false,
     "source-over",
     5,
@@ -14,11 +11,14 @@ const PaintBrush = new Brush(
 const EraserBrush = new Brush(
     document.querySelector("#erasetool"),
     false,
-    "pointer",
+    "url('eraser.svg'), auto",
     false,
     "destination-out",
-    5,
-    "rgba(255, 255, 255, 0)"
+    10,
+    "rgb(255, 255, 255)"
 );
 
+
+PaintBrush.enable();
+PaintBrush.setProps();
 PaintBrush.addCanvasStroke();

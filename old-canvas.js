@@ -44,13 +44,11 @@ addCanvasStroke();
 chooseColor();
 
 function addCanvasStroke() {
-    // canvas.addEventListener('mousemove', drawStroke);
     canvas.addEventListener('mouseup', finishStroke);
     canvas.addEventListener('mousedown', startStroke);
 }
 
 function removeCanvasStroke() {
-    // canvas.removeEventListener('mousemove', drawStroke);
     canvas.removeEventListener('mouseup', finishStroke);
     canvas.removeEventListener('mousedown', startStroke);
 }
@@ -294,6 +292,7 @@ function drawStroke(e) {
     // Identifies the precise position of the mouse.
     let mouseX = e.clientX - this.offsetLeft;
     let mouseY = e.clientY - this.offsetTop;
+
 
     // This creates a "line" wherever the mouse is at its starting position. 
     ctx.lineTo(mouseX, mouseY);

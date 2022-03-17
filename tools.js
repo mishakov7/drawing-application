@@ -1,3 +1,6 @@
+const canvas = document.querySelector("#mycanvas");
+const ctx = canvas.getContext("2d");
+
 class Tool {
     constructor(element, selected, cursor) {
         this.element = element;
@@ -6,13 +9,14 @@ class Tool {
     }
 
     enable() {
-        this.element.classList.add("tool-selected");
         this.selected = true;
+		this.element.classList.add("tool-selected");
+		canvas.style.cursor = this.cursor;
     }
 
     disable() {
+		this.selected = false;
         this.element.classList.remove("tool-selected");
-        this.selected = false;
     }
 }
 
@@ -27,22 +31,22 @@ class Brush extends Tool {
         this.color = color;
     }
 
+
     // We call this function specifically to set default properties.
     setProps() {
         ctx.globalCompositeOperation = this.operation;
         ctx.lineWidth = this.size;
         ctx.lineCap = 'round';
         ctx.strokeStyle = this.color;
-
-        console.log("props set");
-
     }
 
     // Occurs when the mouse is pressed (and held)
     startStroke(e) {
         this.setProps();
         this.painting = true;
-        // savedCanvas.push(canvas.toDataURL("image/png"));
+		
+		//ctx.fillStyle = "#ff0000";
+		//ctx.fillRect(432, 54, 200, 200);
 
         // Allows you to create dots on the canvas.
         canvas.addEventListener('mousemove', this.drawStroke.bind(this));
@@ -56,8 +60,10 @@ class Brush extends Tool {
         }
 
         // Identifies the precise position of the mouse.
-        let mouseX = e.clientX - this.offsetLeft;
-        let mouseY = e.clientY - this.offsetTop;
+        let mouseX = e.clientX - canvas.offsetLeft;
+        let mouseY = e.clientY - canvas.offsetTop + 25;
+		
+		//console.log(e.offsetLeft + ", " + e.offsetTop);
 
         // This creates a "line" wherever the mouse is at its starting position. 
         ctx.lineTo(mouseX, mouseY);
@@ -66,16 +72,18 @@ class Brush extends Tool {
         // As the mouse moves, a path is created and will move concurrently until the mouse is released.
         ctx.beginPath();
         ctx.moveTo(mouseX, mouseY);
+		
+		console.log("drawing" + ctx.strokeStyle);
     }
 
     // Occurs when the mouse is released (from being held)
     finishStroke(e) {
         this.painting = false;
 
-        canvas.removeEventListener('mousemove', this.drawStroke);
-
         // Prevents two consecutive strokes from being connected.
         ctx.beginPath();
+		
+		canvas.removeEventListener('mousemove', this.drawStroke);
 
     }
 
