@@ -139,6 +139,8 @@ class Fill extends Tool {
 
     fillArea(e) {
 
+        console.log(this.selected);
+
         if (this.selected) {
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -178,6 +180,95 @@ class Fill extends Tool {
         }
     
     }
+
+    // Stack Implementation
+    /*fillArea(e) {
+        if (this.selected) {
+
+            var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // Mouse coordinates
+            let mouseX = e.clientX - canvas.offsetLeft + 25;
+            let mouseY = e.clientY - canvas.offsetTop + 25;
+        
+            // Mouse coordinate pixel data
+            this.mouseColor = this.findMouseColor(canvasPixels, mouseX, mouseY);
+        
+            // Fill color pixel data
+            let fillColor = this.findFillColor();
+
+            let pixelStack = [[mouseX, mouseY]];
+
+            // This loop will go on until the stack is empty.
+            while (pixelStack.length > 0) {
+                let currentPixel = pixelStack.pop();
+                let x = currentPixel[0];
+                let y = currentPixel[1];
+
+                // Index of the pixel in the big pixel array
+                let pixelIndex = (y * canvas.width + x) * 4;
+                
+                while ((y-- >= 0) && (this.matchMouseColor(canvasPixels, pixelIndex) == true)) {
+                    pixelIndex -= canvas.width * 4;
+                }
+
+                pixelIndex += canvas.width * 4;
+                y++;
+
+                // Flags used to mark whether or not to push the left/right pixels to the stack.
+                let lookLeft = false;
+                let lookRight = false;
+
+                // Travel down
+                // y++ < canvas.height : above the edge of the canvas
+                // matchMouseColor - checks to see if the color we are landing on is the same color
+                while ((y++ < canvas.height) && (this.matchMouseColor(canvasPixels, pixelIndex))) {
+                    this.colorPixel(canvasPixels, pixelIndex, fillColor);
+
+                    // Look left
+                    if (x > 0) {
+
+                        if ((lookLeft == false) && (this.matchMouseColor(canvasPixels, pixelIndex - 4))) {
+                            let leftCoords = [x - 1, y];
+
+                            // If all consecutive pixels below this pushed pixel
+                            // are the same color, they will NOT be pushed to the stack.
+                            pixelStack.push(leftCoords);
+                            lookLeft = true;
+                        }
+
+                        else if (lookLeft == true) {
+                            lookLeft = false;
+                        }
+                    }
+
+                    // Look right
+                    if (x < canvas.width - 1) {
+                        if ((lookRight == false) && (this.matchMouseColor(canvasPixels, pixelIndex + 4))) {
+                            let rightCoords = [x + 1, y];
+
+                            // If all consecutive pixels below this pushed pixel
+                            // are the same color, they will NOT be pushed to the stack.
+                            pixelStack.push(rightCoords);
+                            lookRight = true;
+                        }
+
+                        else if (lookRight == true) {
+                            lookRight = false;
+                        }
+                    }
+
+                    // This resets the index.
+                    pixelIndex += canvas.width * 4;
+                }
+
+            }
+
+            // This formally instantiates the fill.
+            ctx.putImageData(canvasPixels, 0, 0);
+        
+        }
+    }*/
 
     pushNeighbors(queue, x, y) {
     
