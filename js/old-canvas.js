@@ -99,30 +99,33 @@ download.onclick  = function() {
     link.click();
 }
 
-function enableBrush() {
-    brushTool = true;
+function disableAll() {
+    brushTool = false;
     eraseTool = false;
     fillTool = false;
 
+    removeCanvasStroke();
     removeFillClick();
+}
+
+function enableBrush() {
+    disableAll();
+    brushTool = true;
+
     addCanvasStroke();
 }
 
 function enableErase() {
-    brushTool = false;
+    disableAll();
     eraseTool = true;
-    fillTool = false;
 
-    removeFillClick();
     addCanvasStroke();
 }
 
 function enableFill() {
-    brushTool = false;
-    eraseTool = false;
+    disableAll();
     fillTool = true;
 
-    removeCanvasStroke();
     addFillClick();
 }
 

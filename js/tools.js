@@ -15,18 +15,19 @@ class Tool {
 
     enable() {
 		disableAll(); 
-        this.enableListeners();
 
         this.selected = true;
+        this.enableListeners();
+
 		this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
         this.setProps();
     }
 
     disable() {
+		this.selected = false;
         this.disableListeners();
 
-		this.selected = false;
         this.elmt.classList.remove("tool-selected");
     }
 
@@ -113,11 +114,13 @@ class Brush extends Tool {
     enableListeners() {
         canvas.addEventListener('mouseup', this.finishStroke.bind(this));
         canvas.addEventListener('mousedown', this.startStroke.bind(this));
+        console.log("enabled " + this.elmt.id);
     }
 
     disableListeners() {
         canvas.removeEventListener('mouseup', this.finishStroke.bind(this));
         canvas.removeEventListener('mousedown', this.startStroke.bind(this));
+        console.log("disabled " + this.elmt.id);
     }
 
 }
@@ -131,17 +134,21 @@ class Fill extends Tool {
 
     enableListeners() {
         canvas.addEventListener('click', this.fillArea.bind(this));
+        console.log("enabled " + this.elmt.id);
     }
     
     disableListeners() {
         canvas.removeEventListener('click', this.fillArea.bind(this));
+        console.log("disable " + this.elmt.id);
     }
 
     fillArea(e) {
 
-        console.log(this.selected);
+        e.stopPropagation();
+        e.preventDefault();
 
         if (this.selected) {
+
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
             
@@ -154,6 +161,8 @@ class Fill extends Tool {
         
             // Fill color pixel data
             let fillColor = this.findFillColor();
+
+            console.log(this.mouseColor);
         
             let pixelQueue = [[mouseX, mouseY]];
         
@@ -168,11 +177,12 @@ class Fill extends Tool {
         
                 // If the color does NOT match, it simply
                 // enters the next iteration of the loop and thus, the next element in the stack.
-                if (this.matchMouseColor(canvasPixels, pixelIndex) == false) {
+                if (!this.matchMouseColor(canvasPixels, pixelIndex))
                     continue;
-                }
-        
-                this.colorPixel(canvasPixels, pixelIndex, fillColor);
+
+                if (this.matchMouseColor(canvasPixels, pixelIndex))
+                    this.colorPixel(canvasPixels, pixelIndex, fillColor);
+
                 this.pushNeighbors(pixelQueue, x, y);
             }
         
@@ -271,8 +281,6 @@ class Fill extends Tool {
     }*/
 
     pushNeighbors(queue, x, y) {
-    
-        // Right, Left, Down, Up
         queue.push([x + 1, y]);
         queue.push([x - 1, y]);
         queue.push([x, y + 1]);
