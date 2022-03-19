@@ -27,7 +27,6 @@ const FillTool = new Fill(
 
 // Default tool
 PaintBrush.enable();
-PaintBrush.addCanvasStroke();
 
 // Event listener functions
 chooseColor();
@@ -55,22 +54,47 @@ function chooseColor() {
         colorClicked = true;
 
         colorPicker.addEventListener('change', function() {
-            PaintBrush.color = colorPicker.value;
-            PaintBrush.setColor();
+
+            if (PaintBrush.selected) {
+                PaintBrush.color = colorPicker.value;
+                PaintBrush.setColor();
+            }
+
+            if (FillTool.selected) {
+                FillTool.color = colorPicker.value;
+                FillTool.setColor();
+            }
+
         });
     });
 
     for (var i = 0; i < palette.length; i++) {
         palette[i].addEventListener('click', function(){
             colorClicked = true;
-            PaintBrush.color = this.style.backgroundColor;
-            PaintBrush.setColor();
+
+            if (PaintBrush.selected) {
+                PaintBrush.color = this.style.backgroundColor;
+                PaintBrush.setColor();
+            }
+
+            if (FillTool.selected) {
+                FillTool.color = this.style.backgroundColor;
+                FillTool.setColor();
+            }
 
         });
     }
 
     if (!colorClicked) {
-        PaintBrush.color = 'rgb(255, 255, 255)';
-        PaintBrush.setColor();
+
+        if (PaintBrush.selected) {
+            PaintBrush.color = 'rgb(255, 255, 255)';
+            PaintBrush.setColor();
+        }
+
+        if (FillTool.selected) {
+            FillTool.color = 'rgb(255, 255, 255)';
+            FillTool.setColor();
+        }
     }
 }
