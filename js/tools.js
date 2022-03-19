@@ -15,7 +15,8 @@ class Tool {
 
     enable() {
 		disableAll(); 
-		
+        this.enableListeners();
+
         this.selected = true;
 		this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
@@ -23,6 +24,8 @@ class Tool {
     }
 
     disable() {
+        this.disableListeners();
+
 		this.selected = false;
         this.elmt.classList.remove("tool-selected");
     }
@@ -34,6 +37,14 @@ class Tool {
 
     setProps() {
         
+    }
+
+    enableListeners() {
+
+    }
+
+    disableListeners() {
+
     }
 }
 
@@ -98,17 +109,15 @@ class Brush extends Tool {
 
     }
 
-    addCanvasStroke() {
+    enableListeners() {
         canvas.addEventListener('mouseup', this.finishStroke.bind(this));
         canvas.addEventListener('mousedown', this.startStroke.bind(this));
     }
 
-    removeCanvasStroke() {
+    disableListeners() {
         canvas.removeEventListener('mouseup', this.finishStroke.bind(this));
         canvas.removeEventListener('mousedown', this.startStroke.bind(this));
     }
-	
-    
 
 }
 
@@ -116,4 +125,13 @@ class Fill extends Tool {
     constructor(elmt, selected, cursor, color) {
         super(elmt, selected, cursor, color);
     }
+
+    enableListeners() {
+        canvas.addEventListener('click', this.fillArea.bind(this));
+    }
+    
+    disableListeners() {
+        canvas.removeEventListener('click', this.fillArea.bind(this));
+    }
+    
 }
