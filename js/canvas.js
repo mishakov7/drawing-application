@@ -5,7 +5,9 @@ const PaintBrush = new Brush(
     "rgb(255, 255, 255)",
     false,
     "source-over",
-    5
+    5,
+    document.querySelector("#brush-slider"),
+    document.querySelector("#brush-size")
 );
 
 const EraserBrush = new Brush(
@@ -15,7 +17,9 @@ const EraserBrush = new Brush(
     "rgb(255, 255, 255)",
     false,
     "destination-out",
-    16
+    16,
+    document.querySelector("#eraser-slider"),
+    document.querySelector("#eraser-size")
 );
 
 const FillTool = new Fill(
