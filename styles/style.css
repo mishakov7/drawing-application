@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Ubuntu";
-    src: url("UBUNTUTITLING-BOLD_0.TTF");
+    src: url("../public/UBUNTUTITLING-BOLD_0.TTF");
 }
 
 body {
@@ -20,20 +20,20 @@ body {
     height: max-content;
 }
 
-.prop-wrapper {
+.tool-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
 }
 
-.prop-wrapper .label {
+.tool-wrapper .label {
     color: #FFF;
     font-size: 1.1em;
     text-transform: uppercase;
 }
 
-.prop-column {
+.tool-column {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@ body {
     height: 100%;
 }
 
-.prop-row {
+.tool-row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -55,7 +55,7 @@ body {
     height: 100%;
 }
 
-.prop {
+.tool {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,12 +68,12 @@ body {
     transition: border 0.2s;
 }
 
-.prop:hover {
+.tool:hover {
     border: solid 4px #FFF;
 }
 
 
-.prop-selected {
+.tool-selected {
     border: solid 4px #FFF;
     transition: border 0.2s;
 }
@@ -102,7 +102,7 @@ input[type=color] {
     height: 30px;
 }
 
-#top-container .prop-row {
+#top-container .tool-row {
     align-items: flex-start;
     height: max-content;
 }
@@ -131,39 +131,39 @@ input[type=color] {
     margin-top: 25px;
 }
 
-#second-container .prop-wrapper:first-child,
-#second-container .prop-wrapper:last-child {
+#second-container .tool-wrapper:first-child,
+#second-container .tool-wrapper:last-child {
     max-height: 100px;
 }
 
-#second-container .prop-wrapper:first-child {
+#second-container .tool-wrapper:first-child {
     margin-right: 25px;
 }
 
-#second-container .prop-wrapper:last-child {
+#second-container .tool-wrapper:last-child {
     margin-left: 25px;
 }
 
-#second-container .prop-wrapper:first-child .prop-row,
-#second-container .prop-wrapper:last-child .prop-row {
+#second-container .tool-wrapper:first-child .tool-row,
+#second-container .tool-wrapper:last-child .tool-row {
     display: flex;
     justify-content: center;
     width: 100%;
     border-radius: 16px 16px 28px 28px;
 }
 
-#second-container .prop-wrapper:first-child .prop-row svg,
-#second-container .prop-wrapper:last-child .prop-row svg {
+#second-container .tool-wrapper:first-child .tool-row svg,
+#second-container .tool-wrapper:last-child .tool-row svg {
     cursor: pointer;
     transition: fill 0.2s;
 }
 
 
-#second-container .prop-wrapper:first-child .prop-row svg:hover path {
+#second-container .tool-wrapper:first-child .tool-row svg:hover path {
     fill: rgb(255, 135, 135);
 } 
 
-#second-container .prop-wrapper:last-child .prop-row svg:hover path {
+#second-container .tool-wrapper:last-child .tool-row svg:hover path {
     fill: rgb(177, 225, 130);
 } 
 

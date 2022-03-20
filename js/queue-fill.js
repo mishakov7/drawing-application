@@ -68,8 +68,6 @@ function findFillColor() {
     if (rgbStr[0] == "#") 
         rgbStr = hexToRgb(rgbStr);
 
-    console.log(rgbStr);
-
     rgbArr = rgbStr.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
     
     return [rgbArr[1], rgbArr[2], rgbArr[3]];
