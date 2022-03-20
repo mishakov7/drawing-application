@@ -107,7 +107,7 @@ class Brush extends Tool {
         // Prevents two consecutive strokes from being connected.
         ctx.beginPath();
 		
-		canvas.removeEventListener('mousemove', this.drawStroke);
+		canvas.removeEventListener('mousemove', this.drawStroke.bind(this));
 
     }
 
@@ -158,14 +158,12 @@ class Fill extends Tool {
         
             // Mouse coordinate pixel data
             this.mouseColor = this.findMouseColor(canvasPixels, mouseX, mouseY);
-        
+        // 
             // Fill color pixel data
             let fillColor = this.findFillColor();
 
-            console.log(this.mouseColor);
-        
             let pixelQueue = [[mouseX, mouseY]];
-        
+
             // This loop will go on until the queue is empty.
             while (pixelQueue.length > 0) {
                 let currentPixel = pixelQueue.shift();
@@ -177,16 +175,21 @@ class Fill extends Tool {
         
                 // If the color does NOT match, it simply
                 // enters the next iteration of the loop and thus, the next element in the stack.
-                if (!this.matchMouseColor(canvasPixels, pixelIndex))
-                    continue;
-
                 if (this.matchMouseColor(canvasPixels, pixelIndex))
                     this.colorPixel(canvasPixels, pixelIndex, fillColor);
 
+                else 
+                    continue;
+
+                if (pixelQueue.length > 3992)
+                    break;
+
                 this.pushNeighbors(pixelQueue, x, y);
+                // console.log(pixelQueue.length);
             }
         
             ctx.putImageData(canvasPixels, 0, 0);
+            console.log("hi");
         }
     
     }
