@@ -98,3 +98,55 @@ function chooseColor() {
         }
     }
 }
+
+let savedCanvas = [];
+let removedCanvas = [];
+
+const clear = document.querySelector("#clearimg");
+const download = document.querySelector("#downloadimg");
+const redo = document.querySelector("#redo");
+redo.addEventListener('click', redoAction);
+
+const undo = document.querySelector("#undo");
+undo.addEventListener('click', undoAction);
+
+download.addEventListener("click", function() {
+    url = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+    // NOTE: The method used before only worked in Firefox. 
+    // This method is compatible with Chrome.
+    var link = document.createElement('a');
+    link.download = "drawing.png";
+    link.href = url;
+    link.click();
+});
+
+clear.addEventListener("click", function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+function undoAction() {
+    removedCanvas.push(canvas.toDataURL("image/png"));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let undoImage = new Image();
+
+    undoImage.onload = function() {
+        ctx.drawImage(undoImage, 0, 0);
+    }
+
+    undoImage.src = savedCanvas.pop();
+}
+
+function redoAction() {
+    savedCanvas.push(canvas.toDataURL("image/png"));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let redoImage = new Image();
+
+    redoImage.onload = function() {
+        ctx.drawImage(redoImage, 0, 0);
+    }
+
+    redoImage.src = removedCanvas.pop();
+}

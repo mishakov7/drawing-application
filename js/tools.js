@@ -71,6 +71,7 @@ class Brush extends Tool {
     startStroke(e) {
         if (this.selected) {
             this.painting = true;
+            savedCanvas.push(canvas.toDataURL("image/png"));
 
             // Allows you to create dots on the canvas.
             canvas.addEventListener('mousemove', this.drawStroke.bind(this));
@@ -144,21 +145,21 @@ class Fill extends Tool {
 
     fillArea(e) {
 
-        e.stopPropagation();
-        e.preventDefault();
-
         if (this.selected) {
 
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            
+            savedCanvas.push(canvas.toDataURL("image/png"));
+
             // Mouse coordinates
             let mouseX = e.clientX - canvas.offsetLeft + 25;
             let mouseY = e.clientY - canvas.offsetTop + 25;
         
             // Mouse coordinate pixel data
             this.mouseColor = this.findMouseColor(canvasPixels, mouseX, mouseY);
-        // 
+        
+            console.log(this.mouseColor);
+
             // Fill color pixel data
             let fillColor = this.findFillColor();
 
@@ -181,17 +182,15 @@ class Fill extends Tool {
                 else 
                     continue;
 
-                if (pixelQueue.length > 3992)
+                if (pixelQueue.length > 4005)
                     break;
 
                 this.pushNeighbors(pixelQueue, x, y);
-                // console.log(pixelQueue.length);
             }
         
             ctx.putImageData(canvasPixels, 0, 0);
             console.log("hi");
         }
-    
     }
 
     // Stack Implementation
