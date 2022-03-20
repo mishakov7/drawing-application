@@ -51,20 +51,27 @@ class Tool {
 
 class Brush extends Tool {
 
-    constructor(elmt, selected, cursor, color, painting, operation, size) {
+    constructor(elmt, selected, cursor, color, painting, operation, size, sizeSlider, sizeLabel) {
         super(elmt, selected, cursor, color);
 
         this.painting = painting;
         this.operation = operation;
         this.size = size;
+        this.sizeSlider = sizeSlider;
+        this.sizeLabel = sizeLabel;
     }
-
 
     // We call this function specifically to set default properties.
     setProps() {
         ctx.globalCompositeOperation = this.operation;
         ctx.lineWidth = this.size;
         ctx.lineCap = 'round';
+    }
+
+    setSize() {
+        this.size = this.sizeSlider.value;
+        this.sizeLabel.innerHTML = this.size;
+        this.setProps();
     }
 
     // Occurs when the mouse is pressed (and held)
@@ -115,6 +122,7 @@ class Brush extends Tool {
     enableListeners() {
         canvas.addEventListener('mouseup', this.finishStroke.bind(this));
         canvas.addEventListener('mousedown', this.startStroke.bind(this));
+        this.sizeSlider.addEventListener('change', this.setSize.bind(this));
         console.log("enabled " + this.elmt.id);
     }
 
