@@ -178,6 +178,8 @@ class Fill extends Tool {
 
         if (this.selected) {
 
+            this.disableListeners();
+
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
             savedCanvas.push(canvas.toDataURL("image/png"));
@@ -188,39 +190,41 @@ class Fill extends Tool {
         
             // Mouse coordinate pixel data
             this.mouseColor = this.findMouseColor(canvasPixels, mouseX, mouseY);
-        
-            // console.log(this.mouseColor);
 
             // Fill color pixel data
             let fillColor = this.findFillColor();
 
-            let pixelQueue = [[mouseX, mouseY]];
+            if (String(this.mouseColor) != String(fillColor)) {
+                
+                let pixelQueue = [[mouseX, mouseY]];
 
-            // This loop will go on until the queue is empty.
-            while (pixelQueue.length > 0) {
-                let currentPixel = pixelQueue.shift();
-                let x = currentPixel[0];
-                let y = currentPixel[1];
-        
-                // Index of the pixel in the big pixel array
-                let pixelIndex = (y * canvas.width + x) * 4;
-        
-                // If the color does NOT match, it simply
-                // enters the next iteration of the loop and thus, the next element in the stack.
-                if (this.matchMouseColor(canvasPixels, pixelIndex))
-                    this.colorPixel(canvasPixels, pixelIndex, fillColor);
+                // This loop will go on until the queue is empty.
+                while (pixelQueue.length > 0) {
 
-                else 
-                    continue;
+                    let currentPixel = pixelQueue.shift();
+                    let x = currentPixel[0];
+                    let y = currentPixel[1];
+            
+                    // Index of the pixel in the big pixel array
+                    let pixelIndex = (y * canvas.width + x) * 4;
+            
+                    // If the color does NOT match, it simply
+                    // enters the next iteration of the loop and thus, the next element in the stack.
+                    if (this.matchMouseColor(canvasPixels, pixelIndex))
+                        this.colorPixel(canvasPixels, pixelIndex, fillColor);
 
-                if (pixelQueue.length > 4005)
-                    break;
+                    else 
+                        continue;
 
-                this.pushNeighbors(pixelQueue, x, y);
+                    // if (pixelQueue.length > 6000)
+                    //     break;
+
+                    this.pushNeighbors(pixelQueue, x, y);
+                }
+            
+                ctx.putImageData(canvasPixels, 0, 0);
+                console.log("hi");
             }
-        
-            ctx.putImageData(canvasPixels, 0, 0);
-            // console.log("hi");
         }
     }
 

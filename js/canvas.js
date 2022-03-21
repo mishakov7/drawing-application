@@ -68,11 +68,8 @@ function chooseColor() {
     colorPicker.addEventListener("click", function() {
         colorClicked = true;
 
-        console.log(colorPicker.value);
-
         if (colorPicker.value == null || colorPicker.value == '') {
             colorPicker.value = colorPicker.select();
-            console.log(colorPicker.value);
         }
 
         setToolColor(colorPicker.value);
