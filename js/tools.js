@@ -31,7 +31,8 @@ class Tool {
         this.elmt.classList.remove("tool-selected");
     }
 
-    setColor() {
+    setColor(chosenColor) {
+        this.color = chosenColor;
         ctx.strokeStyle = this.color;
         this.elmt.style.borderColor = this.color;
     }

@@ -68,23 +68,16 @@ function chooseColor() {
     colorPicker.addEventListener("click", function() {
         colorClicked = true;
 
-        colorPicker.addEventListener('change', function() {
+        setToolColor(colorPicker.value);
 
-            if (PaintBrush.selected) {
-                PaintBrush.color = colorPicker.value;
-                PaintBrush.setColor();
-            }
+        colorPicker.addEventListener('input', function() {
 
-            if (FillTool.selected) {
-                FillTool.color = colorPicker.value;
-                FillTool.setColor();
-            }
+            setToolColor(colorPicker.value);
 
             if (colorClicked && EraserBrush.selected) {
                 disableAll();
                 PaintBrush.enable();
-                PaintBrush.color = colorPicker.value;
-                PaintBrush.setColor();
+                PaintBrush.setColor(colorPicker.value);
             }
 
         });
@@ -94,21 +87,12 @@ function chooseColor() {
         palette[i].addEventListener('click', function(){
             colorClicked = true;
 
-            if (PaintBrush.selected) {
-                PaintBrush.color = this.style.backgroundColor;
-                PaintBrush.setColor();
-            }
-
-            if (FillTool.selected) {
-                FillTool.color = this.style.backgroundColor;
-                FillTool.setColor();
-            }
+            setToolColor(this.style.backgroundColor);
 
             if (colorClicked && EraserBrush.selected) {
                 disableAll();
                 PaintBrush.enable();
-                PaintBrush.color = this.style.backgroundColor;
-                PaintBrush.setColor();
+                PaintBrush.setColor(this.style.backgroundColor);
             }
 
         });
@@ -116,16 +100,17 @@ function chooseColor() {
 
     if (!colorClicked) {
 
-        if (PaintBrush.selected) {
-            PaintBrush.color = 'rgb(255, 255, 255)';
-            PaintBrush.setColor();
-        }
-
-        if (FillTool.selected) {
-            FillTool.color = 'rgb(255, 255, 255)';
-            FillTool.setColor();
-        }
+        setToolColor('rgb(255, 255, 255)');
     }
+}
+
+
+function setToolColor(value) {
+    if (PaintBrush.selected)
+        PaintBrush.setColor(value);
+
+    if (FillTool.selected) 
+        FillTool.setColor(value);
 }
 
 let savedCanvas = [];
