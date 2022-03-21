@@ -64,7 +64,6 @@ function disableAll() {
     FillTool.disable();
 }
 
-
 function chooseColor() {
     colorPicker.addEventListener("click", function() {
         colorClicked = true;
@@ -79,6 +78,13 @@ function chooseColor() {
             if (FillTool.selected) {
                 FillTool.color = colorPicker.value;
                 FillTool.setColor();
+            }
+
+            if (colorClicked && EraserBrush.selected) {
+                disableAll();
+                PaintBrush.enable();
+                PaintBrush.color = colorPicker.value;
+                PaintBrush.setColor();
             }
 
         });
@@ -98,6 +104,13 @@ function chooseColor() {
                 FillTool.setColor();
             }
 
+            if (colorClicked && EraserBrush.selected) {
+                disableAll();
+                PaintBrush.enable();
+                PaintBrush.color = this.style.backgroundColor;
+                PaintBrush.setColor();
+            }
+
         });
     }
 
@@ -114,6 +127,7 @@ function chooseColor() {
         }
     }
 }
+
 
 let savedCanvas = [];
 let removedCanvas = [];
