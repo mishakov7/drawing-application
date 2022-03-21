@@ -128,7 +128,6 @@ function chooseColor() {
     }
 }
 
-
 let savedCanvas = [];
 let removedCanvas = [];
 

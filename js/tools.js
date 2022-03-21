@@ -76,7 +76,6 @@ class Brush extends Tool {
         });
 
         this.size = slider.value;
-
     }
 
     toggleSlider(toggle) {
