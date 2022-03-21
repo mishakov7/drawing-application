@@ -69,9 +69,14 @@ class Brush extends Tool {
 
     setSize() {
         const label = document.querySelector("#" + this.elmt.id + "-size");
-        this.size = document.querySelector("#" + this.elmt.id + "-slider").value;
+        const slider = document.querySelector("#" + this.elmt.id + "-slider");
 
-        label.innerHTML = this.size;
+        slider.addEventListener("input", function() {
+            label.innerHTML = slider.value;
+        });
+
+        this.size = slider.value;
+
     }
 
     toggleSlider(toggle) {

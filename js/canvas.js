@@ -45,6 +45,19 @@ FillTool.elmt.addEventListener('click', function () {
     EraserBrush.toggleSlider(false);
 }, false);
 
+const PaintSize = document.querySelector("#" + PaintBrush.elmt.id + "-size");
+const EraserSize = document.querySelector("#" + EraserBrush.elmt.id + "-size");
+
+EraserSize.addEventListener('click', function () {
+    EraserBrush.enable();
+    PaintBrush.toggleSlider(false);
+}, false);
+
+PaintSize.addEventListener('click', function () {
+    PaintBrush.enable();
+    EraserBrush.toggleSlider(false);
+}, false);
+
 function disableAll() {
 	PaintBrush.disable();
     EraserBrush.disable();
