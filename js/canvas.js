@@ -4,10 +4,7 @@ const PaintBrush = new Brush(
     "url('public/paintbrush.svg'), auto",
     "rgb(255, 255, 255)",
     false,
-    "source-over",
-    5,
-    document.querySelector("#brush-slider"),
-    document.querySelector("#brush-size")
+    "source-over"
 );
 
 const EraserBrush = new Brush(
@@ -16,10 +13,7 @@ const EraserBrush = new Brush(
     "url('public/eraser.svg'), auto",
     "rgb(255, 255, 255)",
     false,
-    "destination-out",
-    16,
-    document.querySelector("#eraser-slider"),
-    document.querySelector("#eraser-size")
+    "destination-out"
 );
 
 const FillTool = new Fill(
@@ -37,19 +31,36 @@ chooseColor();
 
 EraserBrush.elmt.addEventListener('click', function () {
     EraserBrush.enable();
+    PaintBrush.toggleSlider(false);
 }, false);
 
 PaintBrush.elmt.addEventListener('click', function () {
     PaintBrush.enable();
+    EraserBrush.toggleSlider(false);
 }, false);
 
 FillTool.elmt.addEventListener('click', function () {
     FillTool.enable();
+    PaintBrush.toggleSlider(false);
+    EraserBrush.toggleSlider(false);
+}, false);
+
+const PaintSize = document.querySelector("#" + PaintBrush.elmt.id + "-size");
+const EraserSize = document.querySelector("#" + EraserBrush.elmt.id + "-size");
+
+EraserSize.addEventListener('click', function () {
+    EraserBrush.enable();
+    PaintBrush.toggleSlider(false);
+}, false);
+
+PaintSize.addEventListener('click', function () {
+    PaintBrush.enable();
+    EraserBrush.toggleSlider(false);
 }, false);
 
 function disableAll() {
 	PaintBrush.disable();
-	EraserBrush.disable();
+    EraserBrush.disable();
     FillTool.disable();
 }
 
@@ -69,6 +80,13 @@ function chooseColor() {
                 FillTool.setColor();
             }
 
+            if (colorClicked && EraserBrush.selected) {
+                disableAll();
+                PaintBrush.enable();
+                PaintBrush.color = colorPicker.value;
+                PaintBrush.setColor();
+            }
+
         });
     });
 
@@ -84,6 +102,13 @@ function chooseColor() {
             if (FillTool.selected) {
                 FillTool.color = this.style.backgroundColor;
                 FillTool.setColor();
+            }
+
+            if (colorClicked && EraserBrush.selected) {
+                disableAll();
+                PaintBrush.enable();
+                PaintBrush.color = this.style.backgroundColor;
+                PaintBrush.setColor();
             }
 
         });

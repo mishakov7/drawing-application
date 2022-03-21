@@ -253,16 +253,19 @@ input[type=color] {
 
 .size-label {
     position: absolute;
-    margin-top: 40px;
-    margin-left: 50px;
+    margin-top: 5px;
     background-color: #FFF;
     color: #26252E;
     padding: 5px;
     border-radius: 20px;
 }
 
-.slider-wrapper {
+#brushtool-slider-wrapper,
+#erasetool-slider-wrapper {
     display: none;
+}
+
+.slider-wrapper {
     position: absolute;
     padding: 0 50px;
 }
@@ -272,16 +275,10 @@ input[type=color] {
     border: solid 3px #544D7C;
     border-radius: 8px;
     padding: 10px;
-    margin-left: 200px;
+    margin-top: -30px;
+    margin-left: -30px;
 }
 
-#brush-slider-wrapper {
-    margin-top: 10px;
-}
-
-#eraser-slider-wrapper {
-    margin-top: 160px;
-}
 
 /* .tool:hover + .slider-wrapper {
     display: block;
