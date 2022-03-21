@@ -51,27 +51,37 @@ class Tool {
 
 class Brush extends Tool {
 
-    constructor(elmt, selected, cursor, color, painting, operation, size, sizeSlider, sizeLabel) {
+    constructor(elmt, selected, cursor, color, painting, operation, size) {
         super(elmt, selected, cursor, color);
 
         this.painting = painting;
         this.operation = operation;
         this.size = size;
-        this.sizeSlider = sizeSlider;
-        this.sizeLabel = sizeLabel;
     }
 
     // We call this function specifically to set default properties.
     setProps() {
+        this.setSize();
         ctx.globalCompositeOperation = this.operation;
         ctx.lineWidth = this.size;
         ctx.lineCap = 'round';
     }
 
     setSize() {
-        this.size = this.sizeSlider.value;
-        this.sizeLabel.innerHTML = this.size;
-        this.setProps();
+        const label = document.querySelector("#" + this.elmt.id + "-size");
+        this.size = document.querySelector("#" + this.elmt.id + "-slider").value;
+
+        label.innerHTML = this.size;
+    }
+
+    toggleSlider(toggle) {
+        const sliderContainer = document.querySelector("#" + this.elmt.id + "-slider-wrapper");
+
+        if (toggle)
+            sliderContainer.style.display = "block";
+
+        else
+            sliderContainer.style.display = "none";
     }
 
     // Occurs when the mouse is pressed (and held)
@@ -92,6 +102,8 @@ class Brush extends Tool {
         if (!this.painting) {
             return;
         }
+
+        this.toggleSlider(false);
 
         // Identifies the precise position of the mouse.
         let mouseX = e.clientX - canvas.offsetLeft;
@@ -120,16 +132,21 @@ class Brush extends Tool {
     }
 
     enableListeners() {
+        const slider = document.querySelector("#" + this.elmt.id + "-slider");
+        const sizeLabel = document.querySelector("#" + this.elmt.id + "-size");
+
         canvas.addEventListener('mouseup', this.finishStroke.bind(this));
         canvas.addEventListener('mousedown', this.startStroke.bind(this));
-        this.sizeSlider.addEventListener('change', this.setSize.bind(this));
-        console.log("enabled " + this.elmt.id);
+        slider.addEventListener('change', this.setSize.bind(this));
+        sizeLabel.addEventListener('click', this.toggleSlider.bind(this));
+
+        // console.log("enabled " + this.elmt.id);
     }
 
     disableListeners() {
         canvas.removeEventListener('mouseup', this.finishStroke.bind(this));
         canvas.removeEventListener('mousedown', this.startStroke.bind(this));
-        console.log("disabled " + this.elmt.id);
+        // console.log("disabled " + this.elmt.id);
     }
 
 }
@@ -143,12 +160,12 @@ class Fill extends Tool {
 
     enableListeners() {
         canvas.addEventListener('click', this.fillArea.bind(this));
-        console.log("enabled " + this.elmt.id);
+        // console.log("enabled " + this.elmt.id);
     }
     
     disableListeners() {
         canvas.removeEventListener('click', this.fillArea.bind(this));
-        console.log("disable " + this.elmt.id);
+        // console.log("disable " + this.elmt.id);
     }
 
     fillArea(e) {
@@ -166,7 +183,7 @@ class Fill extends Tool {
             // Mouse coordinate pixel data
             this.mouseColor = this.findMouseColor(canvasPixels, mouseX, mouseY);
         
-            console.log(this.mouseColor);
+            // console.log(this.mouseColor);
 
             // Fill color pixel data
             let fillColor = this.findFillColor();
@@ -197,7 +214,7 @@ class Fill extends Tool {
             }
         
             ctx.putImageData(canvasPixels, 0, 0);
-            console.log("hi");
+            // console.log("hi");
         }
     }
 
