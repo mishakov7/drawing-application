@@ -35,6 +35,7 @@ class Tool {
         this.color = chosenColor;
         ctx.strokeStyle = this.color;
         this.elmt.style.borderColor = this.color;
+        
     }
 
     setProps() {
@@ -346,7 +347,7 @@ class Fill extends Tool {
             this.color = this.hexToRgb(this.color);
     
         var rgbArr = this.color.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
-        
+
         return [rgbArr[1], rgbArr[2], rgbArr[3]];
     
     }

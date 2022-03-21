@@ -68,6 +68,13 @@ function chooseColor() {
     colorPicker.addEventListener("click", function() {
         colorClicked = true;
 
+        console.log(colorPicker.value);
+
+        if (colorPicker.value == null || colorPicker.value == '') {
+            colorPicker.value = colorPicker.select();
+            console.log(colorPicker.value);
+        }
+
         setToolColor(colorPicker.value);
 
         colorPicker.addEventListener('input', function() {
@@ -106,7 +113,7 @@ function chooseColor() {
 
 
 function setToolColor(value) {
-    if (PaintBrush.selected)
+    if (PaintBrush.selected) 
         PaintBrush.setColor(value);
 
     if (FillTool.selected) 
