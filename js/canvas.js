@@ -64,57 +64,62 @@ function disableAll() {
     FillTool.disable();
 }
 
+
 function chooseColor() {
-    colorPicker.addEventListener("click", function() {
-        colorClicked = true;
-
-        if (colorPicker.value == null || colorPicker.value == '') {
-            colorPicker.value = colorPicker.select();
-        }
-
-        setToolColor(colorPicker.value);
-
-        colorPicker.addEventListener('input', function() {
-
-            setToolColor(colorPicker.value);
-
-            if (colorClicked && EraserBrush.selected) {
-                disableAll();
-                PaintBrush.enable();
-                PaintBrush.setColor(colorPicker.value);
-            }
-
-        });
-    });
-
-    for (var i = 0; i < palette.length; i++) {
-        palette[i].addEventListener('click', function(){
-            colorClicked = true;
-
-            setToolColor(this.style.backgroundColor);
-
-            if (colorClicked && EraserBrush.selected) {
-                disableAll();
-                PaintBrush.enable();
-                PaintBrush.setColor(this.style.backgroundColor);
-            }
-
-        });
-    }
-
-    if (!colorClicked) {
-
+	
+	if (!colorClicked) {
         setToolColor('rgb(255, 255, 255)');
     }
+	
+	colorPicker.addEventListener('input', function() {
+		colorClicked = true;
+		setToolColor(colorPicker.value);
+	});
+
+	// This is for a VERY specific instance where the user clicks on the color selector and does not change ANYTHING.
+	colorPicker.addEventListener('click', function() {
+		colorPicker.addEventListener('click', function() {
+			colorClicked = true;
+			setToolColor(colorPicker.value);
+		});
+	});
+	
+	colorPicker.addEventListener('change', function() {
+		colorClicked = true;
+		console.log("color picker changed: " + colorPicker.value);
+		setToolColor(colorPicker.value);
+	});
+
+	palette.forEach(function(color){
+		color.addEventListener("click", function() {
+			colorClicked = true;
+			setToolColor(color.style.backgroundColor);
+		});
+	});
 }
 
 
 function setToolColor(value) {
-    if (PaintBrush.selected) 
+	
+	/*if (colorPicker.value == null || colorPicker.value == '') {
+		console.log(colorPicker.select());
+		colorPicker.value = colorPicker.select();
+	}*/
+		
+    if (PaintBrush.selected) {
         PaintBrush.setColor(value);
+	}
 
-    if (FillTool.selected) 
+    if (FillTool.selected)  {
         FillTool.setColor(value);
+	}
+	
+	if (colorClicked && EraserBrush.selected) {
+		disableAll();
+		PaintBrush.enable();
+		PaintBrush.setColor(colorPicker.value);
+	}
+
 }
 
 let savedCanvas = [];
