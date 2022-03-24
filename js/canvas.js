@@ -84,40 +84,36 @@ function chooseColor() {
 		});
 	});
 	
-	colorPicker.addEventListener('change', function() {
-		colorClicked = true;
-		console.log("color picker changed: " + colorPicker.value);
-		setToolColor(colorPicker.value);
-	});
-
 	palette.forEach(function(color){
 		color.addEventListener("click", function() {
 			colorClicked = true;
 			setToolColor(color.style.backgroundColor);
 		});
 	});
+	
+	colorClicked = false;
+
 }
 
 
 function setToolColor(value) {
-	
-	/*if (colorPicker.value == null || colorPicker.value == '') {
-		console.log(colorPicker.select());
-		colorPicker.value = colorPicker.select();
-	}*/
+
 		
     if (PaintBrush.selected) {
-        PaintBrush.setColor(value);
+		PaintBrush.color = value;
+        PaintBrush.setColor();
 	}
-
-    if (FillTool.selected)  {
-        FillTool.setColor(value);
-	}
+	
+	if (FillTool.selected)  {
+		FillTool.color = value;
+        FillTool.setColor();
+	} 
 	
 	if (colorClicked && EraserBrush.selected) {
 		disableAll();
 		PaintBrush.enable();
-		PaintBrush.setColor(colorPicker.value);
+		PaintBrush.color = value;
+		PaintBrush.setColor();
 	}
 
 }

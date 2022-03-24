@@ -22,6 +22,7 @@ class Tool {
 		this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
         this.setProps();
+		//this.setColor();
     }
 
     disable() {
@@ -31,8 +32,7 @@ class Tool {
         this.elmt.classList.remove("tool-selected");
     }
 
-    setColor(chosenColor) {
-        this.color = chosenColor;
+    setColor() {
         ctx.strokeStyle = this.color;
         this.elmt.style.borderColor = this.color;
         
@@ -63,6 +63,7 @@ class Brush extends Tool {
 
     // We call this function specifically to set default properties.
     setProps() {
+		this.setColor();
         this.setSize();
         ctx.globalCompositeOperation = this.operation;
         ctx.lineWidth = this.size;
@@ -99,7 +100,6 @@ class Brush extends Tool {
             // Allows you to create dots on the canvas.
             canvas.addEventListener('mousemove', this.drawStroke.bind(this));
 
-            this.setColor();
         }
     }
 
@@ -255,7 +255,6 @@ class Fill extends Tool {
     }
 
     findFillColor() {
-        // this.color = chooseColor();
 		
         if (this.color[0] == "#") 
             this.color = this.hexToRgb(this.color);
