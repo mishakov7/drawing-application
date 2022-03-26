@@ -135,11 +135,16 @@ class Brush extends Tool {
         const slider = document.querySelector("#" + this.elmt.id + "-slider");
         const sizeLabel = document.querySelector("#" + this.elmt.id + "-size");
 
+        slider.addEventListener('change', this.setSize);
+        sizeLabel.addEventListener('click', this.toggleSlider);
+
         canvas.addEventListener('mouseup', this.finishStroke);
         canvas.addEventListener('mousedown', this.startStroke);
         canvas.addEventListener('mousemove', this.drawStroke);
-        slider.addEventListener('change', this.setSize);
-        sizeLabel.addEventListener('click', this.toggleSlider);
+
+        canvas.addEventListener('touchend', this.finishStroke);
+        canvas.addEventListener('touchstart', this.startStroke);
+        canvas.addEventListener('touchmove', this.drawStroke);
 
         // console.log("enabled " + this.elmt.id);
     }
@@ -148,6 +153,10 @@ class Brush extends Tool {
         canvas.removeEventListener('mouseup', this.finishStroke);
         canvas.removeEventListener('mousedown', this.startStroke);
         canvas.removeEventListener('mousemove', this.drawStroke);
+
+        canvas.removeEventListener('touchend', this.finishStroke);
+        canvas.removeEventListener('touchstart', this.startStroke);
+        canvas.removeEventListener('touchmove', this.drawStroke);
 
         // console.log("disabled " + this.elmt.id);
     }
@@ -163,11 +172,14 @@ class Fill extends Tool {
 
     enableListeners() {
         canvas.addEventListener('click', this.fillArea);
+        canvas.addEventListener('touchstart', this.fillArea);
         // console.log("enabled " + this.elmt.id);
     }
     
     disableListeners() {
         canvas.removeEventListener('click', this.fillArea);
+        canvas.removeEventListener('touchstart', this.fillArea);
+
         // console.log("disable " + this.elmt.id);
     }
 
