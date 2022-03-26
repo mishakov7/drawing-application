@@ -92,19 +92,18 @@ class Brush extends Tool {
     }
 
     // Occurs when the mouse is pressed (and held)
-    startStroke(e) {
+    startStroke = e => {
+        console.log("drawing");
+
         if (this.selected) {
             this.painting = true;
             savedCanvas.push(canvas.toDataURL("image/png"));
-
-            // Allows you to create dots on the canvas.
-            canvas.addEventListener('mousemove', this.drawStroke.bind(this));
-
         }
     }
 
     // Occurs as the mouse is moved while being pressed.
-    drawStroke(e) {
+    drawStroke = e => {
+        
         if (!this.painting) {
             return;
         }
@@ -114,8 +113,6 @@ class Brush extends Tool {
         // Identifies the precise position of the mouse.
         let mouseX = e.clientX - canvas.offsetLeft;
         let mouseY = e.clientY - canvas.offsetTop + 25;
-		
-		//console.log(e.offsetLeft + ", " + e.offsetTop);
 
         // This creates a "line" wherever the mouse is at its starting position. 
         ctx.lineTo(mouseX, mouseY);
@@ -127,31 +124,31 @@ class Brush extends Tool {
     }
 
     // Occurs when the mouse is released (from being held)
-    finishStroke(e) {
+    finishStroke = e => {
         this.painting = false;
 
         // Prevents two consecutive strokes from being connected.
         ctx.beginPath();
-		
-		canvas.removeEventListener('mousemove', this.drawStroke.bind(this));
-
     }
 
     enableListeners() {
         const slider = document.querySelector("#" + this.elmt.id + "-slider");
         const sizeLabel = document.querySelector("#" + this.elmt.id + "-size");
 
-        canvas.addEventListener('mouseup', this.finishStroke.bind(this));
-        canvas.addEventListener('mousedown', this.startStroke.bind(this));
-        slider.addEventListener('change', this.setSize.bind(this));
-        sizeLabel.addEventListener('click', this.toggleSlider.bind(this));
+        canvas.addEventListener('mouseup', this.finishStroke);
+        canvas.addEventListener('mousedown', this.startStroke);
+        canvas.addEventListener('mousemove', this.drawStroke);
+        slider.addEventListener('change', this.setSize);
+        sizeLabel.addEventListener('click', this.toggleSlider);
 
         // console.log("enabled " + this.elmt.id);
     }
 
     disableListeners() {
-        canvas.removeEventListener('mouseup', this.finishStroke.bind(this));
-        canvas.removeEventListener('mousedown', this.startStroke.bind(this));
+        canvas.removeEventListener('mouseup', this.finishStroke);
+        canvas.removeEventListener('mousedown', this.startStroke);
+        canvas.removeEventListener('mousemove', this.drawStroke);
+
         // console.log("disabled " + this.elmt.id);
     }
 
@@ -165,20 +162,20 @@ class Fill extends Tool {
     }
 
     enableListeners() {
-        canvas.addEventListener('click', this.fillArea.bind(this));
+        canvas.addEventListener('click', this.fillArea);
         // console.log("enabled " + this.elmt.id);
     }
     
     disableListeners() {
-        canvas.removeEventListener('click', this.fillArea.bind(this));
+        canvas.removeEventListener('click', this.fillArea);
         // console.log("disable " + this.elmt.id);
     }
 
-    fillArea(e) {
+    fillArea = e => {
+
+        console.log("filling");
 
         if (this.selected) {
-
-            this.disableListeners();
 
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);

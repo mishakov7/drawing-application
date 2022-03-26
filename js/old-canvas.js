@@ -270,6 +270,8 @@ function startStroke(e) {
     painting = true;
     savedCanvas.push(canvas.toDataURL("image/png"));
 
+    console.log("drawing");
+
     selectProps();
 
     // Allows you to create dots on the canvas.

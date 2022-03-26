@@ -1,4 +1,6 @@
 function fillArea(e) {
+    console.log("filling");
+    
     // Mouse coordinates
     let mouseX = e.clientX - this.offsetLeft;
     let mouseY = e.clientY - this.offsetTop;
