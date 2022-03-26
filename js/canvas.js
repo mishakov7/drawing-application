@@ -45,6 +45,35 @@ FillTool.elmt.addEventListener('click', function () {
     EraserBrush.toggleSlider(false);
 }, false);
 
+document.addEventListener('keydown', (event) => {
+
+    switch(event.key) {
+        case 'b':
+            PaintBrush.enable();
+            EraserBrush.toggleSlider(false);
+            break;
+
+        case 'e':
+            EraserBrush.enable();
+            PaintBrush.toggleSlider(false);
+            break;
+
+        case 'f':
+            FillTool.enable();
+            PaintBrush.toggleSlider(false);
+            EraserBrush.toggleSlider(false);
+            break;
+
+        case 'c':
+            colorPicker.click();
+            break;
+
+        default: 
+            break;
+    }
+
+});
+
 const PaintSize = document.querySelector("#" + PaintBrush.elmt.id + "-size");
 const EraserSize = document.querySelector("#" + EraserBrush.elmt.id + "-size");
 
