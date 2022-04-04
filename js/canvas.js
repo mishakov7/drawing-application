@@ -153,10 +153,14 @@ let removedCanvas = [];
 const clear = document.querySelector("#clearimg");
 const download = document.querySelector("#downloadimg");
 const redo = document.querySelector("#redo");
+const redoLimit = 6;
 redo.addEventListener('click', redoAction);
 
 const undo = document.querySelector("#undo");
+const undoLimit = 3;
+let undoReached = false;
 undo.addEventListener('click', undoAction);
+
 
 download.addEventListener("click", function() {
     url = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -173,28 +177,59 @@ clear.addEventListener("click", function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
+//var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+
 function undoAction() {
-    removedCanvas.push(canvas.toDataURL("image/png"));
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let undoImage = new Image();
+    if (removedCanvas.length <= undoLimit && !undoReached) {
+        removedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+		
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    undoImage.onload = function() {
-        ctx.drawImage(undoImage, 0, 0);
-    }
+        /*let undoImage = new Image();
 
-    undoImage.src = savedCanvas.pop();
+        undoImage.onload = function() {
+            ctx.drawImage(undoImage, 0, 0);
+        }
+
+        undoImage.src = savedCanvas.pop();*/
+		
+		ctx.putImageData(savedCanvas.pop(), 0, 0);
+
+        if (removedCanvas.length == undoLimit) {
+            undo.querySelector("path").style.fill = 'rgba(255, 255, 255, 0.5)';
+            undo.style.cursor = 'default';
+            removedCanvas = [];
+			undoReached = true;
+        }
+    
+    } 
 }
 
 function redoAction() {
-    savedCanvas.push(canvas.toDataURL("image/png"));
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    let redoImage = new Image();
+    if (savedCanvas.length <= redoLimit) {
+        savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    redoImage.onload = function() {
-        ctx.drawImage(redoImage, 0, 0);
-    }
+        /*let redoImage = new Image();
 
-    redoImage.src = removedCanvas.pop();
+        redoImage.onload = function() {
+            ctx.drawImage(redoImage, 0, 0);
+        }
+
+        redoImage.src = removedCanvas.pop();*/
+		
+		ctx.putImageData(removedCanvas.pop(), 0, 0);
+
+        if (savedCanvas.length == redoLimit) {
+            redo.querySelector("path").style.fill = 'rgba(255, 255, 255, 0.5)';
+            redo.style.cursor = 'default';
+        }
+
+    } 
+    
+    console.log("redo list" + savedCanvas.length);
+
 }

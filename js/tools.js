@@ -93,11 +93,9 @@ class Brush extends Tool {
 
     // Occurs when the mouse is pressed (and held)
     startStroke = e => {
-        console.log("drawing");
-
         if (this.selected) {
             this.painting = true;
-            savedCanvas.push(canvas.toDataURL("image/png"));
+            savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
         }
     }
 
@@ -191,7 +189,7 @@ class Fill extends Tool {
 
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            savedCanvas.push(canvas.toDataURL("image/png"));
+            savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
             // Mouse coordinates
             let mouseX = e.clientX - canvas.offsetLeft + 25;
