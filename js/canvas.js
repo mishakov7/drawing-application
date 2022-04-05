@@ -199,8 +199,8 @@ function undoAction() {
 			undoClicks = 0;
 		}
 		
-		if (savedCanvas.length > 0) {
-			changeArrow(redo, '0.5', 'default');
+		if (removedCanvas.length > 0) {
+			changeArrow(redo, '1.0', 'pointer');
 		}
     } 
 	
