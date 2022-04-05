@@ -95,8 +95,12 @@ class Brush extends Tool {
     startStroke = e => {
         if (this.selected) {
             this.painting = true;
+			
             savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        }
+			
+			if (undoClicks == 0) 
+				changeArrow(undo, '1.0', 'pointer');
+		}
     }
 
     // Occurs as the mouse is moved while being pressed.
@@ -189,7 +193,11 @@ class Fill extends Tool {
 
             // Pixel data
             var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+           
+			if (undoClicks == 0)
+				changeArrow(undo, '1.0', 'pointer');
+			
+			savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
             // Mouse coordinates
             let mouseX = e.clientX - canvas.offsetLeft + 25;

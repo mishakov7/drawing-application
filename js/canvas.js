@@ -152,13 +152,14 @@ let removedCanvas = [];
 
 const clear = document.querySelector("#clearimg");
 const download = document.querySelector("#downloadimg");
+
 const redo = document.querySelector("#redo");
-const redoLimit = 6;
+const redoLimit = 30;
 redo.addEventListener('click', redoAction);
 
+let undoClicks = 0;
 const undo = document.querySelector("#undo");
-const undoLimit = 3;
-let undoReached = false;
+const undoLimit = 5;
 undo.addEventListener('click', undoAction);
 
 
@@ -177,50 +178,39 @@ clear.addEventListener("click", function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
 
-//var canvasPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+function changeArrow(arrow, opacity, cursor) {
+	arrow.querySelector("path").style.fill = 'rgba(255, 255, 255, ' + opacity + ')';
+	arrow.style.cursor = cursor;
+}
 
 function undoAction() {
 
-    if (removedCanvas.length <= undoLimit && !undoReached) {
-        removedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    if (undoClicks <= undoLimit && savedCanvas.length > 0) {
+		undoClicks++;
+		removedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 		
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        /*let undoImage = new Image();
-
-        undoImage.onload = function() {
-            ctx.drawImage(undoImage, 0, 0);
-        }
-
-        undoImage.src = savedCanvas.pop();*/
-		
 		ctx.putImageData(savedCanvas.pop(), 0, 0);
-
-        if (removedCanvas.length == undoLimit) {
-            undo.querySelector("path").style.fill = 'rgba(255, 255, 255, 0.5)';
-            undo.style.cursor = 'default';
-            removedCanvas = [];
-			undoReached = true;
-        }
-    
+		
+		if (undoClicks == undoLimit || savedCanvas.length == 0) {
+			console.log("uh oh");
+			changeArrow(undo, '0.5', 'default');
+			savedCanvas = [];
+			undoClicks = 0;
+		
+		} 
     } 
+	
+	console.log("removedCanvas list: " + removedCanvas.length);
+    console.log("savedCanvas list: " + savedCanvas.length);
 }
 
 function redoAction() {
 
     if (savedCanvas.length <= redoLimit) {
         savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        /*let redoImage = new Image();
-
-        redoImage.onload = function() {
-            ctx.drawImage(redoImage, 0, 0);
-        }
-
-        redoImage.src = removedCanvas.pop();*/
-		
+        
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.putImageData(removedCanvas.pop(), 0, 0);
 
         if (savedCanvas.length == redoLimit) {
@@ -230,6 +220,7 @@ function redoAction() {
 
     } 
     
-    console.log("redo list" + savedCanvas.length);
+	console.log("removedCanvas list: " + removedCanvas.length);
+    console.log("savedCanvas list: " + savedCanvas.length);
 
 }
