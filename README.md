@@ -6,12 +6,11 @@ This application incorporates the use of several tools (brush, eraser, fill tool
 
 Currently planned for the future:
 - Allow option to change colors in palette + add more colors to palette
-- Change cursor to the tool icon
-- Brush & Eraser sizes
 - Optimize application for mobile
+- Layering functionality
+- More tools (lasso, marquee)
 
 Along with that, I will fix the current flaws:
-- Having the color change reflect AS the color is being picked.
 - Filling the background with black...
 
 And refactor the code with an object-oriented approach.
