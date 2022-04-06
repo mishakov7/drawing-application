@@ -25,8 +25,6 @@ const FillTool = new Fill(
 
 // Default settings
 PaintBrush.enable();
-// ctx.fillStyle = "#373545";
-// ctx.fillRect(0, 0, 800, 500);
 
 // Event listener functions
 chooseColor();
@@ -99,7 +97,7 @@ function disableAll() {
 function chooseColor() {
 	
 	if (!colorClicked) {
-        setToolColor('rgb(0, 255, 255, 0.2)');
+        setToolColor('rgb(255, 255, 255, 1.0)');
     }
 	
 	colorPicker.addEventListener('input', function() {
@@ -207,9 +205,6 @@ function undoAction() {
 
     if (redoClicks == 0)
         changeArrow(redo, '1.0', 'pointer');
-	
-	console.log("removedCanvas list: " + removedCanvas.length);
-    console.log("savedCanvas list: " + savedCanvas.length);
 
 }
 
@@ -232,9 +227,6 @@ function redoAction() {
 
     if (undoClicks == 0)
         changeArrow(undo, '1.0', 'pointer');
-	
-	console.log("removedCanvas list: " + removedCanvas.length);
-    console.log("savedCanvas list: " + savedCanvas.length);
 
 }
 

@@ -22,7 +22,6 @@ class Tool {
 		this.elmt.classList.add("tool-selected");
 		canvas.style.cursor = this.cursor;
         this.setProps();
-		//this.setColor();
     }
 
     disable() {
@@ -101,8 +100,6 @@ class Brush extends Tool {
 			if (undoClicks == 0) 
 				changeArrow(undo, '1.0', 'pointer');
 
-            // if (redoClicks == 0)
-            //     changeArrow(redo, '1.0', 'pointer');
 		}
     }
 
@@ -163,7 +160,6 @@ class Brush extends Tool {
         canvas.removeEventListener('touchstart', this.startStroke);
         canvas.removeEventListener('touchmove', this.drawStroke);
 
-        // console.log("disabled " + this.elmt.id);
     }
 
 }
@@ -178,19 +174,15 @@ class Fill extends Tool {
     enableListeners() {
         canvas.addEventListener('click', this.fillArea);
         canvas.addEventListener('touchstart', this.fillArea);
-        // console.log("enabled " + this.elmt.id);
     }
     
     disableListeners() {
         canvas.removeEventListener('click', this.fillArea);
         canvas.removeEventListener('touchstart', this.fillArea);
 
-        // console.log("disable " + this.elmt.id);
     }
 
     fillArea = e => {
-
-        console.log("filling");
 
         if (this.selected) {
 
@@ -199,9 +191,6 @@ class Fill extends Tool {
            
 			if (undoClicks == 0)
 				changeArrow(undo, '1.0', 'pointer');
-
-            // if (redoClicks == 0)
-            //     changeArrow(redo, '1.0', 'pointer');
 			
 			savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 
