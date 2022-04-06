@@ -70,7 +70,7 @@ class Brush extends Tool {
         ctx.lineCap = 'round';
     }
 
-    setSize() {
+    setSize = () => {
         const label = document.querySelector("#" + this.elmt.id + "-size");
         const slider = document.querySelector("#" + this.elmt.id + "-slider");
 
@@ -81,7 +81,7 @@ class Brush extends Tool {
         this.size = slider.value;
     }
 
-    toggleSlider(toggle) {
+    toggleSlider = (toggle) => {
         const sliderContainer = document.querySelector("#" + this.elmt.id + "-slider-wrapper");
 
         if (toggle)
