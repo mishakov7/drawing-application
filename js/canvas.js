@@ -25,8 +25,8 @@ const FillTool = new Fill(
 
 // Default settings
 PaintBrush.enable();
-ctx.fillStyle = "#373545";
-ctx.fillRect(0, 0, 800, 500);
+// ctx.fillStyle = "#373545";
+// ctx.fillRect(0, 0, 800, 500);
 
 // Event listener functions
 chooseColor();
@@ -99,7 +99,7 @@ function disableAll() {
 function chooseColor() {
 	
 	if (!colorClicked) {
-        setToolColor('rgb(255, 255, 255)');
+        setToolColor('rgb(0, 255, 255, 0.2)');
     }
 	
 	colorPicker.addEventListener('input', function() {

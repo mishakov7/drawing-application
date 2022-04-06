@@ -260,33 +260,51 @@ class Fill extends Tool {
         let r = pixels.data[index];
         let g = pixels.data[index + 1];
         let b = pixels.data[index + 2];
-        return [r, g, b];
+        let a = pixels.data[index + 3];
+
+        return [r, g, b, a];
     }
 
     matchMouseColor(pixels, index) {
         let r = pixels.data[index];
         let g = pixels.data[index + 1];
         let b = pixels.data[index + 2];
+        let a = pixels.data[index + 3];
     
         return (
             r == this.mouseColor[0] &&
             g == this.mouseColor[1] &&
-            b == this.mouseColor[2]
+            b == this.mouseColor[2] &&
+            a == this.mouseColor[3]
         );
     }
 
     findFillColor() {
 		
         if (this.color[0] == "#") 
-            this.color = this.hexToRgb(this.color);
+            this.color = this.hexToRgbA(this.color);
     
         var rgbArr = this.color.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
 
-        return [rgbArr[1], rgbArr[2], rgbArr[3]];
+        return [rgbArr[1], rgbArr[2], rgbArr[3], rgbArr[4]];
     
     }
 
-    hexToRgb(c){
+    hexToRgbA = (hex) => {
+        var c;
+        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+            c= hex.substring(1).split('');
+            if(c.length== 3){
+                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c= '0x'+c.join('');
+            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+        }
+        throw new Error('Bad Hex');
+    }
+    
+
+    /*hexToRgb(c){
         if(/^#([a-f0-9]{3}){1,2}$/.test(c)){
             if(c.length== 4){
                 c= '#'+[c[1], c[1], c[2], c[2], c[3], c[3]].join('');
@@ -295,7 +313,7 @@ class Fill extends Tool {
             return 'rgb('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+')';
         }
         return '';
-    }
+    }*/
     
     colorPixel(pixels, index, color) {
         pixels.data[index] = color[0];
