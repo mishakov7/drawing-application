@@ -203,6 +203,8 @@ class Fill extends Tool {
 
             // Fill color pixel data
             let fillColor = this.findFillColor();
+			
+			console.log("mouseColor: " + this.mouseColor + "\nfillColor: " + fillColor);
 
             if (String(this.mouseColor) != String(fillColor)) {
                 
@@ -233,7 +235,10 @@ class Fill extends Tool {
                 }
             
                 ctx.putImageData(canvasPixels, 0, 0);
-            }
+            
+			} else {
+				return;
+			}
         }
     }
 
@@ -275,7 +280,7 @@ class Fill extends Tool {
     
         var rgbArr = this.color.match(/rgba?\((\d{1,3}), ?(\d{1,3}), ?(\d{1,3})\)?(?:, ?(\d(?:\.\d?))\))?/);
 
-        return [rgbArr[1], rgbArr[2], rgbArr[3], rgbArr[4]];
+        return [rgbArr[1], rgbArr[2], rgbArr[3], "255"];
     
     }
 
