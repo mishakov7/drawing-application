@@ -99,7 +99,7 @@ function disableAll() {
 function chooseColor() {
 	
 	if (!colorClicked) {
-        setToolColor('rgb(255, 255, 255)');
+        setToolColor('rgb(0, 255, 255, 0.2)');
     }
 	
 	colorPicker.addEventListener('input', function() {
