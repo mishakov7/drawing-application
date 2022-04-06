@@ -25,8 +25,8 @@ const FillTool = new Fill(
 
 // Default settings
 PaintBrush.enable();
-ctx.fillStyle = "#373545";
-ctx.fillRect(0, 0, 800, 500);
+// ctx.fillStyle = "#373545";
+// ctx.fillRect(0, 0, 800, 500);
 
 // Event listener functions
 chooseColor();
