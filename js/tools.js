@@ -100,6 +100,9 @@ class Brush extends Tool {
 			
 			if (undoClicks == 0) 
 				changeArrow(undo, '1.0', 'pointer');
+
+            // if (redoClicks == 0)
+            //     changeArrow(redo, '1.0', 'pointer');
 		}
     }
 
@@ -196,6 +199,9 @@ class Fill extends Tool {
            
 			if (undoClicks == 0)
 				changeArrow(undo, '1.0', 'pointer');
+
+            // if (redoClicks == 0)
+            //     changeArrow(redo, '1.0', 'pointer');
 			
 			savedCanvas.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
 

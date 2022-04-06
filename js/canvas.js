@@ -124,7 +124,6 @@ function chooseColor() {
 
 }
 
-
 function setToolColor(value) {
 
 		
@@ -160,7 +159,7 @@ redo.addEventListener('click', redoAction);
 
 let undoClicks = 0;
 const undo = document.querySelector("#undo");
-const undoLimit = 5;
+const undoLimit = 30;
 undo.addEventListener('click', undoAction);
 
 
@@ -202,7 +201,10 @@ function undoAction() {
 		if (removedCanvas.length > 0) {
 			changeArrow(redo, '1.0', 'pointer');
 		}
-    } 
+    }
+
+    if (redoClicks == 0)
+        changeArrow(redo, '1.0', 'pointer');
 	
 	console.log("removedCanvas list: " + removedCanvas.length);
     console.log("savedCanvas list: " + savedCanvas.length);
@@ -225,6 +227,9 @@ function redoAction() {
 		
 		} 
     } 
+
+    if (undoClicks == 0)
+        changeArrow(undo, '1.0', 'pointer');
 	
 	console.log("removedCanvas list: " + removedCanvas.length);
     console.log("savedCanvas list: " + savedCanvas.length);
